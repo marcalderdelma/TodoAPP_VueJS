@@ -1,5 +1,6 @@
 <template>
     <ul>
+        <slot></slot>
         <slot name="task"></slot>
     </ul>
 </template>
@@ -17,9 +18,7 @@ export default {
         padding: 0;
         margin: 1em 0 0;
         list-style: none;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-auto-rows: auto;
-        grid-gap: 1em;
+        display: flex;
+        flex-wrap: wrap;
     }
 </style>

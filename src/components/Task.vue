@@ -1,20 +1,41 @@
 <template>
-    <li>
+    <li :class="setClass">
         <slot name="content"></slot>
+        <span>{{ task.description }}</span>
     </li>
 </template>
 
 <script>
-export default {
-
-}
+    export default {
+        props: {
+            task: {
+                type: Object,
+                required: true
+            }
+        },
+        computed: {
+            setClass() {
+                return {
+                    pending: !this.task.done,
+                    done: this.task.done
+                }
+            }
+        }
+    }
 </script>
 
 <style>
     li {
         border: 1px solid #86aaf8;
         border-radius: 5px;
-        min-width: calc(15vw - 1.77em);
+        width: 350px;
+        height: 10em;
+        box-sizing: border-box;
+        padding: 10px;
+        margin: 5px; 
+        overflow: auto;   
+        font-size: 1.2em;
+        font-weight: 300; 
     }
     li span{
         padding: 1em;
@@ -39,7 +60,7 @@ export default {
     }
     .task-header div button:hover {
         border-radius: 50%;
-        background-color: red;
+        background-color: rgb(160, 5, 5);
         color: #e5e5f1;
         cursor: pointer;  
     }
@@ -52,7 +73,7 @@ export default {
     }
     .check-area:hover {
         border-radius: 50%;
-        background-color: green;
+        background-color: rgb(2, 63, 2);
         cursor: pointer;
     }
     .check {
@@ -71,6 +92,21 @@ export default {
     .check::before {
         content: '';
     }
+    .pending {
+        background-color:  #cf0505;
+        border-left: 5px solid #a80b0b;
+        border-bottom: 5px solid #a80b0b;
+        color: #eccdcd;
+    }
+    .done{
+        background-color:  #0e8122;
+        border-left: 5px solid #03460e;
+        border-bottom: 5px solid #03460e;
+        color: #c7f3c7;
 
+    }    
+    .done span {
+        text-decoration: line-through
+    }
 
 </style>

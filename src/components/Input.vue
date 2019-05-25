@@ -3,7 +3,8 @@
         <input type="text" 
             placeholder="New task"
             v-model="value"
-            @keyup.enter="addNewTask">
+            @keyup.enter="addNewTask"
+            maxlength="100">
         <button @click="addNewTask">+</button>
     </span>
 </template>

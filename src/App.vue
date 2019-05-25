@@ -8,14 +8,14 @@
 		<input-task />
 
 		<Tasks>			
-			<Task slot="task" v-for="task in tasks" :key="task.id">
+			<Task :task='task' slot="task" v-for="task in tasks" :key="task.id">
 				<div slot="content" class="task-header">
 					<div>
 						<div @click="markAsDone(task)" class="check-area"><span class="check"></span></div>
 						<button @click="removeTask(task)">X</button>
 					</div>
 				</div>
-				<span slot="content" >{{ task.description }}</span>
+				
 			</Task>
 		</Tasks>
 	</div>
@@ -39,7 +39,7 @@
 			return {				
 				tasks: [
 					{id: 1, description: 'Mussum Ipsum, cacilds vidis litro abertis.', done: true},
-					{id: 2, description: 'A ordem dos tratores não altera o pão duris. Em pé sem cair, deitado sem dormir, sentado sem cochilar e fazendo pose.', done: false},
+					{id: 2, description: 'A ordem dos tratores não altera o pão duris.', done: false},
 					{id: 3, description: 'Per aumento de cachacis, eu reclamis', done: false},
 					{id: 4, description: 'Suco de cevadiss deixa as pessoas mais interessantis.', done: true},
 					{id: 5, description: 'Delegadis gente finis, bibendum egestas augue arcu ut est.', done: true},
@@ -76,7 +76,12 @@
 		},
 		created() {
 			Buzz.listenEvent('newTask', task => {
-				this.tasks.unshift(task)
+				const sameName = t => t.description === task.description
+
+				const taskNotExist =  this.tasks.filter(sameName).length === 0
+				
+				if(taskNotExist)
+					this.tasks.unshift(task)
 			})
 		}
 	}
@@ -96,7 +101,7 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		height: 100vh;
+		/* height: 100vh; */
 		width: 80vw;
 	}
 
