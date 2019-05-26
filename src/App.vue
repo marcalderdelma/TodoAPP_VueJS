@@ -2,21 +2,25 @@
 	<div id="app">
 		<h1>Tarefas</h1>
 		<status-bar>
-			<div class="status" :style="{'width': progress}"></div>
+			<div class="status" :style="{'width': progress + '%'}"></div>
 		</status-bar>
-		<span>{{ progress }}</span>
+		<span>{{ progress }}%</span>
 		<input-task />
 
-		<Tasks>			
-			<Task :task='task' slot="task" v-for="task in tasks" :key="task.id">
-				<div slot="content" class="task-header">
-					<div>
-						<div @click="markAsDone(task)" class="check-area"><span class="check"></span></div>
-						<button @click="removeTask(task)">X</button>
-					</div>
-				</div>
-				
-			</Task>
+		<Tasks>
+			<template v-if="tasks.length">
+				<Task :task='task' slot="task" v-for="task in tasks" :key="task.id">
+					<div slot="content" class="task-header">
+						<div>
+							<div @click="markAsDone(task)" class="check-area"><span class="check"></span></div>
+							<button @click="removeTask(task)">X</button>
+						</div>
+					</div>				
+				</Task>
+			</template>
+			<template v-else>
+				<span>Você está em dia :)</span>
+			</template>
 		</Tasks>
 	</div>
 </template>
@@ -37,40 +41,32 @@
 		},
 		data() {
 			return {				
-				tasks: [
-					{id: 1, description: 'Mussum Ipsum, cacilds vidis litro abertis.', done: true},
-					{id: 2, description: 'A ordem dos tratores não altera o pão duris.', done: false},
-					{id: 3, description: 'Per aumento de cachacis, eu reclamis', done: false},
-					{id: 4, description: 'Suco de cevadiss deixa as pessoas mais interessantis.', done: true},
-					{id: 5, description: 'Delegadis gente finis, bibendum egestas augue arcu ut est.', done: true},
-					{id: 6, description: 'Per aumento de cachacis, eu reclamis.', done: false},
-					{id: 7, description: 'Copo furadis é disculpa de bebadis, arcu quam euismod magna', done: true},
-					{id: 8, description: 'Mussum Ipsum, cacilds vidis litro abertis. Mé faiz elementum girarzis, nisi eros vermeio.', done: true},
-					],
+				tasks: [],
 			}
 		},
 		methods: {
 			markAsDone(task) {
-				if(task.done) return;
-				task.done = true
+				task['done'] = !task['done']
 			},
 			removeTask(task){
-				//event.stopPropagation()
 				this.tasks.splice(this.tasks.indexOf(task),1)
-				//console.log(this.tasks.indexOf(task))
+			},
+			syncLocalStrage() {
+				localStorage.setItem('tasksList', JSON.stringify(this['tasks']))
 			}
 		},
 		computed: {
 			progress() {
-				let count = 0
-				if(!this.tasks.length) 
-					return '0%'
-				else {
-					this.tasks.forEach(task => {
-						if(task.done)
-							count++
-					})
-					return Math.round(count * 100 / this.tasks.length) + '%'
+				let taskDone = this.tasks.filter(task => task['done']).length
+				let total = this['tasks'].length
+				return Math.round(taskDone / total * 100) || 0	
+			}
+		},
+		watch: {
+			tasks: {
+				deep: true,
+				handler() {
+					this['syncLocalStrage']()
 				}
 			}
 		},
@@ -80,9 +76,12 @@
 
 				const taskNotExist =  this.tasks.filter(sameName).length === 0
 				
-				if(taskNotExist)
-					this.tasks.unshift(task)
+				taskNotExist && this.tasks.unshift(task)
 			})
+
+			let data = localStorage.getItem('tasksList')
+			data = JSON.parse(data);
+			this['tasks'] = Array.isArray(data) ? data : []
 		}
 	}
 </script>
@@ -101,7 +100,6 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		/* height: 100vh; */
 		width: 80vw;
 	}
 

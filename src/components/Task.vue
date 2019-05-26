@@ -27,7 +27,7 @@
 <style>
     li {
         border: 1px solid #86aaf8;
-        border-radius: 5px;
+        border-radius: 6px;
         width: 350px;
         height: 10em;
         box-sizing: border-box;
