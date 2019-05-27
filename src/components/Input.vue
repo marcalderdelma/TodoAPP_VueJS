@@ -4,7 +4,8 @@
             placeholder="New task"
             v-model="value"
             @keyup.enter="addNewTask"
-            maxlength="100">
+            maxlength="100"
+            v-focus>
         <button @click="addNewTask">+</button>
     </span>
 </template>
@@ -14,17 +15,21 @@
     export default {
         data() {
             return {
-                id: 9,
                 value: ''
+            }
+        },
+        directives: {
+            focus: {
+                inserted(el) {
+                    el.focus()
+                }
             }
         },
         methods: {
             addNewTask() {
                 if(!this.value)
                     return;
-                let id = this.id++
                 const task = {
-                    id,
                     description: this.value,
                     done: false
                 }

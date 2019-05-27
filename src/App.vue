@@ -5,11 +5,11 @@
 			<div class="status" :style="{'width': progress + '%'}"></div>
 		</status-bar>
 		<span>{{ progress }}%</span>
-		<input-task />
+		<input-task/>
 
 		<Tasks>
 			<template v-if="tasks.length">
-				<Task :task='task' slot="task" v-for="task in tasks" :key="task.id">
+				<Task :task='task' slot="task" v-for="task in tasks" :key="task['description']">
 					<div slot="content" class="task-header">
 						<div>
 							<div @click="markAsDone(task)" class="check-area"><span class="check"></span></div>
