@@ -29,11 +29,11 @@
         border: 1px solid #86aaf8;
         border-radius: 6px;
         width: 350px;
-        height: 10em;
+        height: 160px;
         box-sizing: border-box;
         padding: 10px;
         margin: 5px; 
-        overflow: auto;   
+        overflow: hidden;   
         font-size: 1.2em;
         font-weight: 300; 
     }

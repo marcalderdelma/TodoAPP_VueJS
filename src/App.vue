@@ -9,14 +9,16 @@
 
 		<Tasks>
 			<template v-if="tasks.length">
-				<Task :task='task' slot="task" v-for="task in tasks" :key="task['description']">
-					<div slot="content" class="task-header">
-						<div>
-							<div @click="markAsDone(task)" class="check-area"><span class="check"></span></div>
-							<button @click="removeTask(task)">X</button>
-						</div>
-					</div>				
-				</Task>
+				<transition-group name="slide" tag="span">
+					<Task :task='task' v-for="task in tasks" :key="task			['description']">
+						<div slot="content" class="task-header">
+							<div>
+								<div @click="markAsDone(task)" class="check-area"><span class="check"></span></div>
+								<button @click="removeTask(task)">X</button>
+							</div>
+						</div>				
+					</Task>
+				</transition-group>
 			</template>
 			<template v-else>
 				<span>Você está em dia :)</span>
@@ -107,5 +109,52 @@
 		margin-bottom: 5px;
 		font-weight: 300;
 		font-size: 3rem;
+	}
+
+	.slide-enter {
+
+	}
+	.slide-enter-active {
+		animation: slide-in 1s ease;
+	}
+	.slide-enter-to {
+
+	}
+	.slide-leave {
+
+	}
+	.slide-leave-active {
+		animation: slide-out 1s ease;
+	}
+	.slide-leave-to {
+
+	}
+	.slide-move {
+		transition: height 2s;
+		width: 100%;
+	}
+
+	@keyframes slide-in {
+		0% {
+			/* width: 0; */
+			height: 0;
+		}
+		100% {
+			/* width: 350px; */
+			height: 160px;
+		}
+	}
+	@keyframes slide-out {
+		0% {
+			/* width: 350px; */
+			height: 160px;			
+		}
+		98% {
+			/* width: 0; */
+			height: 0;
+		}
+		100% {
+			opacity: 0;
+		}
 	}
 </style>
