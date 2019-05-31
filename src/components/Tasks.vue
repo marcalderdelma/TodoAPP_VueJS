@@ -1,7 +1,6 @@
 <template>
     <ul>
         <slot></slot>
-        <slot name="task"></slot>
     </ul>
 </template>
 
